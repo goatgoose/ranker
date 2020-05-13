@@ -24,6 +24,23 @@ class Ranker(Graph):
         self.add_edge(Edge(parent, less_node))
         self.add_edge(Edge(parent, greater_node))
 
+    @property
+    def next_comparison(self):
+        considered = set()
+        not_considered = set()
+
+        for node in self.nodes:
+            if node not in considered:
+                continue
+            elif len(node.edges) > 0:
+                not_considered.add(node)
+                considered.remove(node)
+            else:
+                considered.add(node)
+
+        sorted_considered = sorted(considered, key=lambda node: node.depth)
+        return sorted_considered[0], sorted_considered[1]
+
 class ImagesNode(Node):
     def __init__(self, images):
         super().__init__(frozenset(images))
