@@ -12,12 +12,6 @@ class Node:
     def __repr__(self):
         return str(self)
 
-class ImagesNode(Node):
-    def __init__(self, id_, images):
-        super().__init__(id_)
-
-        self.images = images
-
 class Edge:
     def __init__(self, tail: Node, head: Node):
         self.tail: Node = tail
