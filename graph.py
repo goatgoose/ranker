@@ -28,6 +28,17 @@ class Graph:
     def add_edge(self, edge: Edge):
         self.nodes[edge.tail.id].edges[edge.head.id] = edge
 
+    def remove_node(self, node_to_remove):
+        for node in self.nodes:
+            edges_to_remove = []
+            for edge in node.edges:
+                if edge.head.id == node_to_remove.id or edge.tail.id == node_to_remove.id:
+                    edges_to_remove.append(edge)
+            for edge_to_remove in edges_to_remove:
+                del node.edges[edge_to_remove]
+
+        del self.nodes[node_to_remove.id]
+
     def breadth_first_traverse(self, start_id):
         s = self.nodes[start_id]
         layers = [{s}]  # layer : nodes in layer
