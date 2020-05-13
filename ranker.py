@@ -41,6 +41,7 @@ class Ranker(Graph):
         sorted_considered = sorted(considered, key=lambda node: node.depth)
         return sorted_considered[0], sorted_considered[1]
 
+
 class ImagesNode(Node):
     def __init__(self, images):
         super().__init__(frozenset(images))
