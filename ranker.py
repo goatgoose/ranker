@@ -14,15 +14,16 @@ class Ranker(Graph):
         less_node = self.nodes[frozenset([less])]
         greater_node = self.nodes[frozenset([greater])]
 
-        parent = None
         if equal:
-            parent = ImagesNode(less_node.id.union(greater_node.id))
+            tie_group = ImagesNode(less_node.id.union(greater_node.id))
+            self.add_node(tie_group)
+            self.remove_node(less_node)
+            self.remove_node(greater_node)
         else:
             parent = ImagesNode(greater_node.id.copy())
-        parent.depth = greater_node.depth
-
-        self.add_edge(Edge(parent, less_node))
-        self.add_edge(Edge(parent, greater_node))
+            parent.depth = greater_node.depth
+            self.add_edge(Edge(parent, less_node))
+            self.add_edge(Edge(parent, greater_node))
 
     @property
     def next_comparison(self):
@@ -40,6 +41,10 @@ class Ranker(Graph):
 
         sorted_considered = sorted(considered, key=lambda node: node.depth)
         return sorted_considered[0], sorted_considered[1]
+
+    @property
+    def rank(self):
+        return {images: node.depth for images, node in self.nodes.items()}
 
 
 class ImagesNode(Node):
